@@ -200,7 +200,7 @@ class DSWorker:
             else:
                 result = self._check(indexes, info_fields[0][i], info_fields[1][i], info_fields[2][i])
                 if result[0] == True:
-                    results.append('1')
+                    results.append('0')
                     errors.append('')
                 else:
                     results.append('1')
