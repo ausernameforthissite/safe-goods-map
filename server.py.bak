@@ -19,7 +19,7 @@ def getFile(path):
     return file_str
 
 async def start(request):
-    return web.Response(text=getFile('home.html'), content_type='text/html', status=200)
+    return web.Response(text=getFile('index.html'), content_type='text/html', status=200)
     
 async def js(request):
     return web.Response(text=getFile('index.js'), status=200)
