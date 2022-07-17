@@ -158,9 +158,9 @@ class DSWorker:
             resultc = [[], [], []]
             for j in range(0, len(self.X_names)):
                 values = self.i2g[index][j+1]
-                precision = 0.8 * (len(indexes) - self.i2g[i][0][j])
+                precision = 0.99 * (len(indexes) - self.i2g[i][0][j])
                 precisionr = 0.5 * (len(indexes) - self.i2g[i][0][j])
-                precisionc = 0.2 * (len(indexes) - self.i2g[i][0][j])
+                precisionc = 0.01 * (len(indexes) - self.i2g[i][0][j])
                 for value in values:
                     if values[value] >= precisionc:
                         resultc[j].append(value.lower())
@@ -180,7 +180,6 @@ class DSWorker:
             info_fields.append(list(map(lambda x : [] if x[0] == 'nan' else x[0].split(';'), df[[self.X_names[i]]].values)))
         results = []
         errors = []
-        count = 0
         for i in range(0, len(names)):
             indexes = self.getNearestIndexesByName(names[i])
             if len(indexes) < 0:
@@ -191,21 +190,19 @@ class DSWorker:
                     results.append('0')
                     errors.append('')
                 else:
-                    count = count + 1
-                    print(count)
                     results.append('1')
                     errors_string = ''
                     for j in range(0, len(self.X_names)):
                         if len(result[1][j]) > 0:
                             errors_string += self.X_names[j] + ': ' + ','.join(list(map(lambda x: x[0] + ' - ' + x[1], result[1][j]))) + ';'
                     errors.append(errors_string)
-        print('done')
         df['Наличие ошибки'] = pandas.Series(results)
         df['Ошибка'] = pandas.Series(errors)
         df.to_excel(outputfile)
         
     def task2(self, inputfile, outputfile):
         df = pandas.read_excel(inputfile).astype('str')
+        xnames = ['ТН ВЭД ЕАЭС', 'Технические регламенты', 'Группа продукции']
         names = list(map(lambda x : x[0], df[[self.y_name]].values))
         results = [[], [], []]
         for i in range(0, len(names)):
@@ -216,8 +213,8 @@ class DSWorker:
                 result = [[], [], []]
             for i in range(0, len(results)):
                 results[i].append(';'.join(result[i]))
-        for i in range(0, len(self.X_names)):
-            df[self.X_names[i]] = pandas.Series(results[i])
+        for i in range(0, len(xnames)):
+            df[xnames[i]] = pandas.Series(results[i])
         df.to_excel(outputfile)
         
     def __init__(self, config):
