@@ -3,6 +3,7 @@ import aiohttp
 import aiohttp_cors
 from dsworker import DSWorker
 import yaml
+import codecs
 
 cache = dict()
 
@@ -13,7 +14,7 @@ with open("./config.yaml", 'r') as stream:
         print(exc)
 
 def getFile(path):
-    file = open(path, 'r')
+    file = codecs.open(path, 'r', encoding='utf-8')
     file_str = file.read()
     file.close()
     return file_str
