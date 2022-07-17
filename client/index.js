@@ -55,7 +55,7 @@ async function getAddresses(query) {
 };
 
 var queryBackend = async function (method, params) {
-    const backendAddress = '192.168.0.10';
+    const backendAddress = 'localhost';
     const protocol = 'http';
     let url = backendAddress;
 
