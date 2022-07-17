@@ -78,6 +78,8 @@ class DSWorker:
         errors = [[], [], []]
         result = True
         for i in range(0, len(user_results)):
+            if len(user_results[i]) == 0:
+                continue
             for user in user_results[i]:
                 if user not in possible_result[i]:
                     errors[i].append([user, 'redundant'])
@@ -116,8 +118,12 @@ class DSWorker:
                 self.i2g[i][0][j] = self.i2g[i][0][j] + 1
                 continue
             lst = lst.split(';')
+            dropped = set()
             for l in lst:
                 l = l.strip()
+                if l in dropped:
+                    continue
+                dropped.add(l)
                 if l in self.i2g[i][j+1]:
                     self.i2g[i][j+1][l] = self.i2g[i][j+1][l] + 1
                 else:
@@ -186,12 +192,14 @@ class DSWorker:
                     errors.append('')
                 else:
                     count = count + 1
+                    print(count)
                     results.append('1')
                     errors_string = ''
                     for j in range(0, len(self.X_names)):
                         if len(result[1][j]) > 0:
                             errors_string += self.X_names[j] + ': ' + ','.join(list(map(lambda x: x[0] + ' - ' + x[1], result[1][j]))) + ';'
                     errors.append(errors_string)
+        print('done')
         df['Наличие ошибки'] = pandas.Series(results)
         df['Ошибка'] = pandas.Series(errors)
         df.to_excel(outputfile)
