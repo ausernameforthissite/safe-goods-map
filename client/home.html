@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=a9097011-1b82-425e-915b-92e1938a14dc"
+        type="text/javascript"></script>
+    <script src="index.js">
+    </script>
+    <script>
+        window.onload = () => {
+            init(document.getElementById('textField'), document.getElementById('newSearch'), document.getElementById('button'));
+        }
+    </script>
+    <style>
+        body,
+        html {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #map {
+            width: 100%;
+            height: 80%;
+        }
+
+        #newSearch {
+            float: center;
+            /* display: block; */
+            text-align: left;
+            width: 50%;
+            margin: 0;
+            padding: 14px;
+            
+            display: flex;
+            margin-left: auto;
+            margin-right: 0px;
+        }
+
+        #centered {
+            
+            display: flex;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        #button {
+            /* float: right; */
+            padding: 6px;
+            margin-top: 8px;
+            margin-right: 16px;
+            background: #ddd;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+            
+            display: flex;
+            margin-left: 0px;
+            margin-right: auto;
+        }
+
+        #button:hover {
+            background: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <div id='centered' width="100%">
+        <input id='newSearch' class='searchClass' type="text" placeholder="Введите текст для поиска">
+        <input id='button' type="button" value="Поиск" />
+    </div>
+</body>
+
+</html>
