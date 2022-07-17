@@ -9,19 +9,19 @@
 В корневом каталоге репозитория выполните команду:
 
 ```
-./start
+python3 server.py
 ```
 (в Linux)
 
 ```
-.\start
+python.exe .\server.py
 ```
 (в Windows)
 
 В браузере перейдите по адресу:
 
 ```
-http://localhost/
+http://localhost/start
 ```
 
 ## Технологии
@@ -35,3 +35,7 @@ http://localhost/
 
 - JavaScript
 - Библиотека Яндекс.Карт
+
+### Модель
+
+Модель находится в файле Jupyter Notebook `model.ipynb`.
