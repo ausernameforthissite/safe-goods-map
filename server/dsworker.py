@@ -109,9 +109,9 @@ class DSWorker:
         indexes = self.getNearIndexesByVector(self.getSentenceVector(rows['name']), 0.2)
         return list(map(lambda x: {"name": self.getData(self.y_name, x), "il": self.getData(self.map_names[0], x), "zayavitel": self.getData(self.map_names[1], x), "zayavitelAddress": self.getData(self.map_names[2], x), "izgotovitel": self.getData(self.map_names[3], x), "izgotovitelCountry": self.getData(self.map_names[4], x), "izgotovitelAddress": self.getData(self.map_names[5], x)}, indexes))
         
-    def addInfo(self, info_fields, i):
+    def addInfo(self, info_fields, i, orig_i):
         for j in range(0, len(self.X_names)):
-            lst = info_fields[j][i]
+            lst = info_fields[j][orig_i]
             if lst == '' or lst == 'nan':
                 self.i2g[i][0][j] = self.i2g[i][0][j] + 1
                 continue
@@ -136,13 +136,13 @@ class DSWorker:
             name = names[i]
             if name in self.n2v:
                 self.vectors[self.n2v[name]][1].append(i)
-                self.addInfo(info_fields, self.vectors[self.n2v[name]][1][0])
+                self.addInfo(info_fields, self.vectors[self.n2v[name]][1][0], i)
                 continue
             new_vector = self.getSentenceVector(name)
             self.vectors.append([new_vector, [i]])
             self.n2v[name] = len(self.vectors) - 1
             self.i2g[i] = [[0, 0, 0], dict(), dict(), dict()]
-            self.addInfo(info_fields, i)
+            self.addInfo(info_fields, i, i)
         for i in self.i2g:
             name = names[i]
             indexes = self.vectors[self.n2v[name]][1]
@@ -152,9 +152,9 @@ class DSWorker:
             resultc = [[], [], []]
             for j in range(0, len(self.X_names)):
                 values = self.i2g[index][j+1]
-                precision = 0.999 * (len(indexes) - self.i2g[i][0][j])
+                precision = 0.8 * (len(indexes) - self.i2g[i][0][j])
                 precisionr = 0.5 * (len(indexes) - self.i2g[i][0][j])
-                precisionc = 0.001 * (len(indexes) - self.i2g[i][0][j])
+                precisionc = 0.2 * (len(indexes) - self.i2g[i][0][j])
                 for value in values:
                     if values[value] >= precisionc:
                         resultc[j].append(value.lower())
@@ -176,7 +176,6 @@ class DSWorker:
         errors = []
         count = 0
         for i in range(0, len(names)):
-            print(i)
             indexes = self.getNearestIndexesByName(names[i])
             if len(indexes) < 0:
                 results.append('0')
@@ -193,7 +192,6 @@ class DSWorker:
                         if len(result[1][j]) > 0:
                             errors_string += self.X_names[j] + ': ' + ','.join(list(map(lambda x: x[0] + ' - ' + x[1], result[1][j]))) + ';'
                     errors.append(errors_string)
-        print(count)
         df['Наличие ошибки'] = pandas.Series(results)
         df['Ошибка'] = pandas.Series(errors)
         df.to_excel(outputfile)

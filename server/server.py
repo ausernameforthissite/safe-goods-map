@@ -52,7 +52,6 @@ for route in routes:
     cors.add(resource.add_route('POST', route[1]))
 
 dsworker = DSWorker(config['datascienceinfo'])
-#dsworker.task1('dataset 15072022.xlsx', 'check.xlsx')
 
 if __name__ == "__main__":
     web.run_app(app, host=config['host'], port=config['port'])
