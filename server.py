@@ -70,7 +70,7 @@ for route in routes_get:
     cors.add(resource.add_route('GET', route[1]))
 
 dsworker = DSWorker(config['datascienceinfo'])
-#dsworker.task('Имя команды_Тесты.xlsx', 'тест1', 'тест2')
+#dsworker.task('Имя команды_Тесты.xlsx', 'тест1', 'тест2', 'output.xlsx')
 
 if __name__ == "__main__":
     web.run_app(app, host=config['host'], port=config['port'])

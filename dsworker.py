@@ -172,13 +172,13 @@ class DSWorker:
             self.i2gr[i] = resultr
             self.i2gc[i] = resultc
             
-    def task(self, inputfile, sheet1, sheet2):
+    def task(self, inputfile, sheet1, sheet2, outputfile):
         xl = pandas.ExcelFile(inputfile, engine='openpyxl')
         df1 = xl.parse(sheet1).astype('str')
         df2 = xl.parse(sheet2).astype('str')
         df1 = self.task1(df1)
         df2 = self.task2(df2)
-        writer = pandas.ExcelWriter(inputfile, engine = 'openpyxl')
+        writer = pandas.ExcelWriter(outputfile, engine = 'openpyxl')
         df1.to_excel(writer, sheet_name=sheet1)
         df2.to_excel(writer, sheet_name=sheet2)
         writer.save()
@@ -195,7 +195,8 @@ class DSWorker:
         for i in range(0, len(names)):
             indexes = self.getNearestIndexesByName(names[i])
             if len(indexes) == 0:
-                results.append('0')
+                results.append('1')
+                errors.append('')
             else:
                 result = self._check(indexes, info_fields[0][i], info_fields[1][i], info_fields[2][i])
                 if result[0] == True:
